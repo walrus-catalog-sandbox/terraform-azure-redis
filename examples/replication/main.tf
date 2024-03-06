@@ -17,20 +17,12 @@ provider "azurerm" {
   features {}
 }
 
-# create resource group.
-
-resource "azurerm_resource_group" "example" {
-  name     = "myResourceGroup"
-  location = "eastus"
-}
-
 # create redis service.
 
 module "this" {
   source = "../.."
 
   infrastructure = {
-    resource_group      = azurerm_resource_group.example.name
     publicly_accessible = true
   }
 

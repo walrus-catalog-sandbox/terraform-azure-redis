@@ -35,18 +35,21 @@ Specify the infrastructure information for deploying.
 Examples:
 ```
 infrastructure:
-  resource_group: string             # the resource group name where to deploy the Redis Server
+  resource_group: string, optional   # the resource group name where to deploy the Redis Server
   virtual_network: string, optional  # the virtual network name where to deploy the Redis Server
   subnet: string, optional           # the subnet name under the virtual network where to deploy the Redis Server
   publicly_accessible: bool          # whether the Redis service is publicly accessible
 ```
 EOF
   type = object({
-    resource_group      = string
+    resource_group      = optional(string)
     virtual_network     = optional(string)
     subnet              = optional(string)
     publicly_accessible = optional(bool, false)
   })
+  default = {
+    publicly_accessible = false
+  }
 }
 
 #

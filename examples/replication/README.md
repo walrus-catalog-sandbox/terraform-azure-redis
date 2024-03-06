@@ -17,9 +17,7 @@ $ terraform apply -auto-approve
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.88.0 |
+No providers.
 
 ## Modules
 
@@ -29,9 +27,7 @@ $ terraform apply -auto-approve
 
 ## Resources
 
-| Name | Type |
-|------|------|
-| [azurerm_resource_group.example](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+No resources.
 
 ## Inputs
 

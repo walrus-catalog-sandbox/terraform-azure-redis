@@ -5,40 +5,40 @@ components:
   schemas:
     variables:
       type: object
-      required:
-      - infrastructure
       properties:
         infrastructure:
           title: Infrastructure
           type: object
           description: |
             Specify the infrastructure information for deploying.
-          default: {}
-          required:
-          - resource_group
+          default:
+            publicly_accessible: false
           properties:
-            domain_suffix:
-              title: Domain Suffix
-              type: string
-              x-walrus-ui:
-                order: 1
             publicly_accessible:
               default: false
+              description: |
+                Specify whether the Redis Server is publicly accessible.
               title: Publicly Accessible
               type: boolean
               x-walrus-ui:
                 order: 4
             resource_group:
+              description: |
+                Specify the resource group for the Redis Server. If not specified, it will generate a default resource group.
               title: Resource Group
               type: string
               x-walrus-ui:
                 order: 1
             subnet:
+              description: Specify the subnet for the Redis Server. If not specified,
+                the Redis Server will not be deployed in a subnet.
               title: Subnet
               type: string
               x-walrus-ui:
                 order: 3
             virtual_network:
+              description: |
+                Specify the virtual network for the Redis Server. If not specified, the Redis Server will not be deployed in a virtual network.
               title: Virtual Network
               type: string
               x-walrus-ui:

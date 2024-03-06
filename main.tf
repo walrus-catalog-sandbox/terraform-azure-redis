@@ -23,11 +23,20 @@ locals {
   architecture = coalesce(var.architecture, "standalone")
 }
 
+# create resource group.
+
+resource "azurerm_resource_group" "default" {
+  count = var.infrastructure.resource_group == null ? 1 : 0
+
+  name     = "default"
+  location = "eastus"
+}
+
 #
 # Ensure
 #
 data "azurerm_resource_group" "selected" {
-  name = var.infrastructure.resource_group
+  name = var.infrastructure.resource_group != null ? var.infrastructure.resource_group : azurerm_resource_group.default[0].name
 
   lifecycle {
     postcondition {
@@ -51,7 +60,7 @@ data "azurerm_virtual_network" "selected" {
 }
 
 data "azurerm_subnet" "selected" {
-  count = var.infrastructure.subnet != null ? 1 : 0
+  count = var.infrastructure.subnet != null && var.infrastructure.virtual_network != null ? 1 : 0
   name  = var.infrastructure.subnet
 
   virtual_network_name = data.azurerm_virtual_network.selected[0].name

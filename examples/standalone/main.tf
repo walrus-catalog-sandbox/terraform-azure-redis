@@ -53,6 +53,10 @@ module "this" {
     subnet          = azurerm_subnet.example.name
   }
 
+  resources = {
+    class = "Premium"
+  }
+
   depends_on = [azurerm_subnet.example]
 }
 

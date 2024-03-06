@@ -38,7 +38,7 @@ output "refer" {
       endpoints          = local.endpoints
       endpoints_readonly = local.endpoints_readonly
       password           = nonsensitive(local.password)
-      passwords_readonly = nonsensitive(join(",", local.passwords_readonly))
+      passwords_readonly = length(local.passwords_readonly) > 0 ? join(",", [for p in local.passwords_readonly : nonsensitive(p)]) : null
     }
   }
 }
