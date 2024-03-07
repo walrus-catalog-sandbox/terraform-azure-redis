@@ -92,20 +92,17 @@ components:
             Specify the computing resources.
             Please note that the resources class is only available for the Basic, Standard, and Premium pricing tiers.
             See https://docs.microsoft.com/en-us/azure/azure-cache-for-redis/cache-overview#pricing for more information.
-            Examples:
-            ```
-            resources:
-              class: string, optional            # sku
-            ```
           default:
             class: Basic
-          enum:
-          - Basic
-          - Standard
-          - Premium
           properties:
             class:
               default: Basic
+              description: |
+                Specify the pricing tier for the Redis cache. Valid values are Basic, Standard, and Premium.
+              enum:
+              - Basic
+              - Standard
+              - Premium
               title: Class
               type: string
               x-walrus-ui:
