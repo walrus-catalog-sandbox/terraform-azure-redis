@@ -6,8 +6,9 @@ locals {
   resource_name    = coalesce(try(var.context["resource"]["name"], null), "example")
   resource_id      = coalesce(try(var.context["resource"]["id"], null), "example_id")
 
+  namespace = join("-", [local.project_name, local.environment_name])
   tags = {
-    "Name" = local.resource_name
+    "Name" = join("-", [local.namespace, local.resource_name])
 
     "walrus.seal.io-catalog-name"     = "terraform-azure-redis"
     "walrus.seal.io-project-id"       = local.project_id
@@ -26,7 +27,7 @@ locals {
 resource "azurerm_resource_group" "default" {
   count = var.infrastructure.resource_group == null ? 1 : 0
 
-  name     = local.name
+  name     = local.fullname
   location = "eastus"
 }
 
@@ -84,14 +85,15 @@ resource "random_string" "name_suffix" {
 # create server.
 
 locals {
-  name    = join("-", [local.resource_name, random_string.name_suffix.result])
-  version = coalesce(try(split(".", var.engine_version)[0], null), "6")
+  name     = join("-", [local.resource_name, random_string.name_suffix.result])
+  fullname = format("walrus-%s", md5(join("-", [local.namespace, local.name])))
+  version  = coalesce(try(split(".", var.engine_version)[0], null), "6")
 
   replication_readonly_replicas = var.replication_readonly_replicas == 0 ? 1 : var.replication_readonly_replicas
 }
 
 resource "azurerm_redis_cache" "primary" {
-  name = local.name
+  name = local.fullname
   tags = local.tags
 
   resource_group_name = data.azurerm_resource_group.selected.name
@@ -112,7 +114,7 @@ resource "azurerm_redis_cache" "primary" {
 resource "azurerm_redis_cache" "secondary" {
   count = var.architecture == "replication" ? local.replication_readonly_replicas : 0
 
-  name = join("-", [local.name, "secondary", tostring(count.index)])
+  name = join("-", [local.fullname, "secondary", tostring(count.index)])
   tags = local.tags
 
   resource_group_name = data.azurerm_resource_group.selected.name
